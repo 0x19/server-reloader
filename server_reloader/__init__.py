@@ -65,6 +65,9 @@ class CodeWatcher(object):
                 continue
             if mtime != self._mtimes[filename]:
                 self._mtimes = {}
+                # Make sure gevent semaphore do not force code to be reloaded
+                if filename.endswith("gevent/_semaphore.so"):
+                    continue 
                 return True
         return False
 
